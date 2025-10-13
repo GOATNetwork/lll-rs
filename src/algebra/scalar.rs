@@ -109,7 +109,8 @@ impl Scalar for BigNum {
 
     fn round(f: &Self::Fraction) -> Self::Integer {
         let (fract, trunc) = f.clone().fract_trunc(Integer::new());
-        if fract.abs() > (1_u16, 2_u16) {
+        let half = Rational::from((1_u16, 2_u16));
+        if fract.abs().gt(&half) {
             f.clone().signum().numer() * (trunc.abs() + Integer::from(1))
         } else {
             trunc
