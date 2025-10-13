@@ -1,4 +1,4 @@
-use rug::{Integer, Rational};
+use rug::{Integer, Rational, rational::MiniRational};
 use std::{
     cmp::PartialOrd,
     fmt::Debug,
@@ -109,8 +109,7 @@ impl Scalar for BigNum {
 
     fn round(f: &Self::Fraction) -> Self::Integer {
         let (fract, trunc) = f.clone().fract_trunc(Integer::new());
-        let half = Rational::from((1_u16, 2_u16));
-        if fract.abs().gt(&half) {
+        if fract.abs() > MiniRational::from((1_u16, 2_u16)) {
             f.clone().signum().numer() * (trunc.abs() + Integer::from(1))
         } else {
             trunc
